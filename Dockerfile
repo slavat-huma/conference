@@ -4,9 +4,7 @@ LABEL authors="slavat-huma"
 COPY . /app
 WORKDIR /app
 
-RUN pip install uv && \
-    uv venv --python 3.11 && \
-    uv sync
+RUN pip install -r requirements.txt
 
 RUN chmod +x /app/entrypoint.sh
-ENTRYPOINT ["./entrypoint.sh"]
+CMD ["/bin/bash", "-c", "./entrypoint.sh"]

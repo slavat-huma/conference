@@ -16,7 +16,7 @@ class ServerConfig(BaseModel):
     def from_env(cls):
         return cls(
             host=os.environ.get("CS_HOST", "0.0.0.0"),
-            port=int(os.environ.get("CS_PORT"), 8000),
+            port=int(os.environ.get("CS_PORT", 8000)),
             deepGram=DeepGramConfig(key=os.environ.get("CS_DEEP_GRAM_KEY")),
         )
 
