@@ -9,35 +9,29 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@v3
       - name: Set up Python 3.11
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v3
         with:
           python-version: '3.11'
-
       - name: Install uv and dependencies
         run: |
           pip install uv
           uv install
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build and push Docker image to GHCR
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}/conference-app:latest
-          
       - name: Run App with Uvicorn
         env:
           CS_DEEP_GRAM_KEY: ${{ secrets.CS_DEEP_GRAM_KEY }}
