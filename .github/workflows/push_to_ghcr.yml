@@ -24,7 +24,3 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}/conference-app:latest
-          build-args: |
-            CS_DEEP_GRAM_KEY: ${{ secrets.CS_DEEP_GRAM_KEY }}
-            CS_HOST: "0.0.0.0"
-            CS_PORT: "8000"
