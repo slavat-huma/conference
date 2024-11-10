@@ -17,7 +17,8 @@ jobs:
       - name: Install uv and dependencies
         run: |
           pip install uv
-          uv install
+          uv venv --python 3.11
+          uv sync
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Log in to GitHub Container Registry
