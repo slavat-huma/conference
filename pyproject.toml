@@ -1,0 +1,16 @@
+[project]
+name = "conference"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "black>=24.10.0",
+    "deepgram-sdk>=3.7.6",
+    "fastapi>=0.115.4",
+    "inject>=5.2.1",
+    "pre-commit>=4.0.1",
+    "pydantic>=2.9.2",
+    "pyyaml>=6.0.2",
+    "uvicorn>=0.32.0",
+]
