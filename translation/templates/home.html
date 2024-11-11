@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h2>Select a Language</h2>
+
+    <!-- Language Dropdown -->
+    <select id="language-dropdown">
+        <option value="en">English</option>
+        <option value="es">Spanish</option>
+        <option value="fr">French</option>
+        <!-- Add more options for all world languages -->
+    </select>
+
+    <!-- Record Button -->
+    <div style="margin-top: 2rem;">
+        <button id="record-btn" onclick="toggleRecording()" style="font-size: 1.5rem;">
+            <span id="record-icon">▶️</span> Record audio
+        </button>
+    </div>
+
+    <script>
+        let isRecording = false;
+        let mediaRecorder;
+        let audioChunks = [];
+
+        async function toggleRecording() {
+            const recordBtn = document.getElementById("record-btn");
+            const recordIcon = document.getElementById("record-icon");
+
+            if (!isRecording) {
+                // Start recording
+                isRecording = true;
+                recordIcon.textContent = "⏹️";  // Change icon to stop
+                recordBtn.style.color = "red";  // Indicate recording
+
+                // Request permission and start recording
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const formData = new FormData();
+                    formData.append('audio', audioBlob);
+
+                    // Send audio to the server
+                    try {
+                        await fetch('/api/v1/audio/record', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        alert("Audio recording sent successfully!");
+                    } catch (error) {
+                        console.error("Error sending audio:", error);
+                    }
+
+                    audioChunks = [];  // Clear recorded chunks
+                };
+
+                mediaRecorder.start();
+            } else {
+                // Stop recording
+                isRecording = false;
+                recordIcon.textContent = "▶️";  // Change icon back to play
+                recordBtn.style.color = "black";
+
+                mediaRecorder.stop();
+            }
+        }
+    </script>
+{% endblock %}
