@@ -1,3 +1,6 @@
+from abc import ABCMeta
+
+
 class SingletonMeta(type):
     _instances = {}
 
@@ -6,3 +9,7 @@ class SingletonMeta(type):
             instance = super().__call__(*args, **kwargs)
             cls._instances[cls] = instance
         return cls._instances[cls]
+
+
+class SingletonABCMeta(SingletonMeta, ABCMeta):
+    pass

@@ -3,8 +3,7 @@ import os
 from minio import Minio
 from pydantic import BaseModel
 
-from common.adapters.storage import StorageAdapter
-from common.utils import SingletonMeta
+from storage.adapters.storage import StorageAdapter
 
 
 class MinioConfig(BaseModel):
@@ -25,7 +24,7 @@ class MinioConfig(BaseModel):
         )
 
 
-class MinioStorageAdapter(StorageAdapter, metaclass=SingletonMeta):
+class MinioStorageAdapter(StorageAdapter):
     def __init__(self):
         self.config = MinioConfig.from_env()
         self.client = Minio(

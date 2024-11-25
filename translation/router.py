@@ -1,10 +1,13 @@
 from fastapi import APIRouter
 
-from server.config import SERVER_CONFIG
-
-router = APIRouter()
+router = APIRouter(prefix="/api/v1/translation", tags=["translation"])
 
 
 @router.get("/")
 async def root():
-    return {f"Test api. Test value: {SERVER_CONFIG.deepGram.key}"}
+    return "Test api."
+
+
+@router.post("/audio-file-to-text")
+async def audio_file_to_text():
+    return "text"

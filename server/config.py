@@ -10,13 +10,15 @@ class DeepGramConfig(BaseModel):
 class ServerConfig(BaseModel):
     host: str
     port: int
+    secret: str
     deepGram: DeepGramConfig
 
     @classmethod
     def from_env(cls):
         return cls(
-            host=os.environ.get("CS_HOST", "0.0.0.0"),
-            port=int(os.environ.get("CS_PORT", 8000)),
+            host=os.getenv("CS_HOST", "0.0.0.0"),
+            port=int(os.getenv("CS_PORT", 8000)),
+            secret=os.getenv("CS_SECRET"),
             deepGram=DeepGramConfig(key=os.environ.get("CS_DEEPGRAM_KEY")),
         )
 
