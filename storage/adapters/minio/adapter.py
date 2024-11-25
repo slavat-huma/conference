@@ -1,4 +1,5 @@
 import os
+from typing import BinaryIO
 
 from minio import Minio
 from pydantic import BaseModel
@@ -12,6 +13,7 @@ class MinioConfig(BaseModel):
     access_key: str
     secret_key: str
     secure: bool
+    bucket: str
 
     @classmethod
     def from_env(cls):
@@ -21,6 +23,7 @@ class MinioConfig(BaseModel):
             access_key=os.getenv("CS_MINIO_ACCESS_KEY"),
             secret_key=os.getenv("CS_MINIO_SECRET_KEY"),
             secure=os.getenv("CS_MINIO_SECURE", False),
+            bucket=os.getenv("CS_BUCKET_NAME", False),
         )
 
 
@@ -34,5 +37,5 @@ class MinioStorageAdapter(StorageAdapter):
             secure=self.config.secure,
         )
 
-    async def upload_file(self):
-        pass
+    async def upload_file(self, file_name: str, data: BinaryIO, length: int):
+        self.client.put_object(self.config.bucket, file_name, data, length)

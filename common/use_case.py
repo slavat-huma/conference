@@ -7,8 +7,8 @@ class UseCase(ABC):
 
     async def execute(self, request_object):
         self.request_object = request_object
-        await self.process_request()
+        await self.process_request(request_object)
 
     @abstractmethod
-    async def process_request(self):
+    async def process_request(self, request_object):
         raise NotImplementedError
